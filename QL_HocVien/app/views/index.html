@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Quản lý học viện nghiên cứu và giảng dạy</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      #spinner {
+        height: 100vh;
+        width: 100vw;
+        background: #000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 10000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <div id="spinner"></div> -->
+
+    <div class="container-fluid px-5">
+      <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler d-lg-none"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        ></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdownId"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >Dropdown</a
+              >
+              <div class="dropdown-menu" aria-labelledby="dropdownId">
+                <a class="dropdown-item" href="#">Action 1</a>
+                <a class="dropdown-item" href="#">Action 2</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <header class="display-4 my-4">
+        Quản lý học viện nghiên cứu và giảng dạy
+      </header>
+      <!-- Phan tab menu -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="tabSV"
+            data-toggle="tab"
+            data-target="#tabSV-pane"
+            type="button"
+            role="tab"
+            aria-controls="tabSV-pane"
+            aria-selected="true"
+          >
+            Danh sách sinh viên
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="tabNV"
+            data-toggle="tab"
+            data-target="#tabNV-pane"
+            type="button"
+            role="tab"
+            aria-controls="tabNV-pane"
+            aria-selected="false"
+          >
+            Danh sách nhân viên
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="tabKH"
+            data-toggle="tab"
+            data-target="#tabKH-pane"
+            type="button"
+            role="tab"
+            aria-controls="tabKH-pane"
+            aria-selected="false"
+          >
+            Danh sách khách hàng
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="tabAll"
+            data-toggle="tab"
+            data-target="#tabAll-pane"
+            type="button"
+            role="tab"
+            aria-controls="tabAll-pane"
+            aria-selected="false"
+          >
+            Danh sách tổng
+          </button>
+        </li>
+      </ul>
+      <br />
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <!--Danh sách sinh viên -->
+        <div
+          role="tabpanel"
+          class="tab-pane fade show active"
+          id="tabSV-pane"
+          aria-labelledby="tabSV"
+        >
+          <div class="row">
+            <div class="col-md-8">
+              <!-- BEGIN BUTTOM THÊM MỚI -->
+              <button
+                id="btnThemSV"
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#myModal"
+              >
+                <i class="fa fa-plus mr-1"></i>
+                Thêm học viên
+              </button>
+              <!-- END BUTTON THÊM MỚI -->
+            </div>
+            <div class="col-md-4">
+              <!-- BEGIN TÌM KIẾM -->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập từ khóa"
+                  aria-label="Recipient's username"
+                  aria-describedby="nutTimSV"
+                  id="timSV"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="nutTimSV"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+              </div>
+              <!-- END TÌM KIẾM -->
+            </div>
+          </div>
+          <div class="clear-fix"></div>
+          <div class="tblSV" id="tblSV">
+            <!-- BEGIN TABLE SẢN PHẨM -->
+            <table class="table table-bordered">
+              <thead>
+                <th>Mã sinh viên</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Toán</th>
+                <th>Lý</th>
+                <th>Hóa</th>
+                <th>Chức năng</th>
+              </thead>
+              <tbody id="tblDanhSachSV"></tbody>
+            </table>
+            <!-- END TABLE SẢN PHẨM -->
+          </div>
+          <br />
+        </div>
+        <!-- Kết thúc danh sách sinh viên -->
+
+        <!--Danh sách giảng viên -->
+        <div
+          role="tabpanel"
+          class="tab-pane fade"
+          id="tabNV-pane"
+          aria-labelledby="tabNV"
+        >
+          <div class="row">
+            <div class="col-md-8">
+              <!-- BEGIN BUTTOM THÊM MỚI -->
+              <button
+                id="btnThemNV"
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#myModal"
+              >
+                <i class="fa fa-plus mr-1"></i>
+                Thêm giảng viên
+              </button>
+              <!-- END BUTTON THÊM MỚI -->
+            </div>
+            <div class="col-md-4">
+              <!-- BEGIN TÌM KIẾM -->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập từ khóa"
+                  aria-label="Recipient's username"
+                  aria-describedby="nutTimNV"
+                  id="timNV"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="nutTimNV"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+              </div>
+              <!-- END TÌM KIẾM -->
+            </div>
+          </div>
+          <div class="clear-fix"></div>
+          <div class="tblNV" id="tblNV">
+            <!-- BEGIN TABLE SẢN PHẨM -->
+            <table class="table table-bordered">
+              <thead>
+                <th>Mã nhân viên</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Số ngày làm việc</th>
+                <th>Lương ngày</th>
+                <th>Chức năng</th>
+              </thead>
+              <tbody id="tblDanhSachNV"></tbody>
+            </table>
+            <!-- END TABLE SẢN PHẨM -->
+          </div>
+          <br />
+        </div>
+        <!-- Kết thúc danh sách giảng viên -->
+
+        <!--Danh sách khách hàng -->
+        <div
+          role="tabpanel"
+          class="tab-pane fade"
+          id="tabKH-pane"
+          aria-labelledby="tabKH"
+        >
+          <div class="row">
+            <div class="col-md-8">
+              <!-- BEGIN BUTTOM THÊM MỚI -->
+              <button
+                id="btnThemKH"
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#myModal"
+              >
+                <i class="fa fa-plus mr-1"></i>
+                Thêm khách hàng
+              </button>
+              <!-- END BUTTON THÊM MỚI -->
+            </div>
+            <div class="col-md-4">
+              <!-- BEGIN TÌM KIẾM -->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập từ khóa"
+                  aria-label="Recipient's username"
+                  aria-describedby="nutTimKH"
+                  id="timKH"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="nutTimKH"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+              </div>
+              <!-- END TÌM KIẾM -->
+            </div>
+          </div>
+          <div class="clear-fix"></div>
+          <div class="tblKH" id="tblKH">
+            <!-- BEGIN TABLE SẢN PHẨM -->
+            <table class="table table-bordered">
+              <thead>
+                <th>Mã khách hàng</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Công ty</th>
+                <th>Hóa đơn</th>
+                <th>Đánh giá</th>
+                <th>Chức năng</th>
+              </thead>
+              <tbody id="tblDanhSachKH"></tbody>
+            </table>
+            <!-- END TABLE SẢN PHẨM -->
+          </div>
+          <br />
+        </div>
+        <!-- Kết thúc danh sách khách hàng -->
+
+        <!-- Danh sách tổng -->
+        <div
+          role="tabpanel"
+          class="tab-pane fade"
+          id="tabAll-pane"
+          aria-labelledby="tabAll"
+        >
+          <div class="row">
+            <!-- <div class="col-md-8">
+
+          <button
+          id="btnThemNV"
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#myModal"
+        >
+          <i class="fa fa-plus mr-1"></i>
+          Thêm giảng viên
+        </button>
+
+        </div> -->
+            <div class="col-md-12">
+              <!-- BEGIN TÌM KIẾM -->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập từ khóa"
+                  aria-label="Recipient's username"
+                  aria-describedby="nutTimAll"
+                  id="timAll"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="nutTimAll"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+              </div>
+              <!-- END TÌM KIẾM -->
+            </div>
+          </div>
+          <div class="clear-fix"></div>
+          <div class="tblAll" id="tblAll">
+            <!-- BEGIN TABLE SẢN PHẨM -->
+            <table class="table table-bordered">
+              <thead>
+                <th>Mã nhân viên</th>
+                <th>Họ tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Loại</th>
+              </thead>
+              <tbody id="tblDanhSachAll"></tbody>
+            </table>
+            <!-- END TABLE SẢN PHẨM -->
+          </div>
+          <br />
+        </div>
+      </div>
+
+      <!--KetThuc Tabmenu-->
+
+      <!-- The Modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div id="product-id" class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Mã</label>
+                <input
+                  id="personID"
+                  class="form-control"
+                  placeholder="Nhập vào mã"
+                />
+              </div>
+              <div class="form-group">
+                <label>Họ tên</label>
+                <input
+                  id="hoTen"
+                  class="form-control"
+                  placeholder="Nhập vào giá"
+                />
+              </div>
+              <div class="form-group">
+                <label>Địa chỉ</label>
+                <input
+                  id="diaChi"
+                  class="form-control"
+                  placeholder="Nhập vào địa chỉ"
+                />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  id="email"
+                  class="form-control"
+                  placeholder="Nhập vào email"
+                />
+              </div>
+              <div class="form-group" id="form-toan">
+                <label>Điểm toán</label>
+                <input
+                  id="toan"
+                  class="form-control"
+                  placeholder="Nhập vào điểm toán"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-ly">
+                <label>Điểm lý</label>
+                <input
+                  id="ly"
+                  class="form-control"
+                  placeholder="Nhập vào điểm lý"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-hoa">
+                <label>Điểm hóa</label>
+                <input
+                  id="hoa"
+                  class="form-control"
+                  placeholder="Nhập vào điểm hóa"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-soNgay">
+                <label>Số ngày làm việc</label>
+                <input
+                  id="soNgay"
+                  class="form-control"
+                  placeholder="Nhập vào số ngày làm việc"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-luongNgay">
+                <label>Lương theo ngày</label>
+                <input
+                  id="luongNgay"
+                  class="form-control"
+                  placeholder="Nhập vào lương ngày"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-tenCongTy">
+                <label>Tên công ty</label>
+                <input
+                  id="tenCongTy"
+                  class="form-control"
+                  placeholder="Nhập vào tên công ty"
+                />
+              </div>
+              <div class="form-group" id="form-hoaDon">
+                <label>Hóa đơn</label>
+                <input
+                  id="hoaDon"
+                  class="form-control"
+                  placeholder="Nhập vào hóa đơn"
+                  type="number"
+                />
+              </div>
+              <div class="form-group" id="form-danhGia">
+                <label>Đánh giá</label>
+                <input
+                  id="danhGia"
+                  class="form-control"
+                  placeholder="Nhập vào đánh giá"
+                />
+              </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button class="btn btn-success" id="addPersonButton">Thêm</button>
+              <button class="btn btn-success" id="updatePersonButton">
+                Cập nhật
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container"></div>
+    <style>
+      #container {
+        min-width: 310px;
+        max-width: 800px;
+        height: 400px;
+        margin: 0 auto;
+      }
+    </style>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"
+      integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- my js -->
+    <script src="../controllers/main.js" type="module"></script>
+  </body>
+</html>
